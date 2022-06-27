@@ -2,7 +2,7 @@ import icons from 'url:../../img/icons.svg';
 import fracty from 'fracty';
 
 import View from './View.js';
-//coz parcel and babel can't polyfill private methods while inheriting,we should go back to protected properties and methods.
+
 class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
   _errorMessage = "We couldn't find that recipe.Please try another one.";
@@ -23,7 +23,6 @@ class RecipeView extends View {
   }
   addHandlerAddBookmark(handler) {
     this._parentElement.addEventListener('click', function (e) {
-      //We cant select btn--bookmark coz at the time of loading page,it is not present and we cant add event listener to null
       const btn = e.target.closest('.btn--bookmark');
       if (!btn) return;
       handler();
