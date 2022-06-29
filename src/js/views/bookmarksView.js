@@ -14,8 +14,6 @@ class BookmarksView extends View {
     return this._data
       .map(bookmark => previewView.render(bookmark, false))
       .join('');
-    //Why dont we simply call previewView.generateMarkup instead of putting render to false thats coz we still need it to set the data property of data we passed in so that we can use this keyword in previewView.
-    //WE returned the string coz render=false from View to previewView module/So when previewVIew.render is called above,it returns string which is then returned by bookmarksView which was run initially by controller when bookmark was added.
   }
 }
 export default new BookmarksView();

@@ -8,6 +8,7 @@ class PaginationView extends View {
       const btn = e.target.closest('.btn--inline');
       if (!btn) return;
       const goToPage = Number(btn.dataset.goto);
+      if (!goToPage) return;
       console.log(goToPage);
       handler(goToPage);
       //       this._data.page = goToPage;
@@ -22,6 +23,9 @@ class PaginationView extends View {
     console.log(numPages);
     if (curPage === 1 && numPages > 1) {
       return `
+      <button class="btn--inline pagination__btn--prev">
+          <span>Total page:${numPages}</span>
+    </button>
         <button data-goto="${
           curPage + 1
         }" class="btn--inline pagination__btn--next">
@@ -35,6 +39,7 @@ class PaginationView extends View {
     // Last page
     if (curPage === numPages && numPages > 1) {
       return `
+      
       <button data-goto="${
         curPage - 1
       }"class="btn--inline pagination__btn--prev">
@@ -43,6 +48,9 @@ class PaginationView extends View {
             </svg>
             <span>Page ${curPage - 1}</span>
       </button>
+      <button class="btn--inline pagination__btn--prev">
+          <span>Total page:${numPages}</span>
+    </button>
       `;
     }
     //Pages in front and back too.
@@ -56,6 +64,9 @@ class PaginationView extends View {
             </svg>
             <span>Page ${curPage - 1}</span>
         </button>
+        <button class="btn--inline pagination__btn--prev">
+          <span>Total page:${numPages}</span>
+    </button>
         <button data-goto="${
           curPage + 1
         }"class="btn--inline pagination__btn--next">
@@ -67,7 +78,11 @@ class PaginationView extends View {
       `;
     }
     //Page 1 and no other pages
-    return '';
+    return `
+    <button class="btn--inline ">
+          <span>Total page:${numPages}</span>
+    </button>
+    `;
   }
 }
 export default new PaginationView();

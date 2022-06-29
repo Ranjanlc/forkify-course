@@ -117,17 +117,3 @@ const init = function () {
   addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 init();
-/*
-//Lecture:Helper and configuration files
-//Many real world applications have two special modules that are independent of the architecture which are for the project configuration and modules for general helper fns which are gonna be useful in our project.Lets start with configuration module.WE create a new file config.js in our folder which contains all variables which is const and should be used across the project.The goal of this file with all these variables is it will allow us to configure projects by simply changing some of the data in the configuration file.We dont want to put all the variables,the only variables we want are the ones responsible for kind of the defining important data about application itself.One example is api url
-
-//Lecture:Event handlers in MVC:The publisher-subscriber pattern
-//Lets analyze,we have the hashchange and loadevent  in the controller.However it doesnt make sense,eth related to DOM(view) should be inside of a view.However,the handler fn we use to handle is in the controller module.WE have basically a problem.WE want eventListeners to be in the view but handler fn couldn't be put into view
-//Why not we call controlRecipe from view whenever an error occurs?
-//Its not possible coz in the way we set up the architechture,the view knows nothing about the controller.So,it doesnt import from the controller(only other way around).Fortunately,there is a soln which is called publisher subscriber design pattern(standard soln for certain problems).
-//Code that knows when to react(publisher)=>addHandlerRender().Subscriber  is the code that wants to react=>controlRecipes().And publisher doesnt know that subscriber even exist.
-//The soln is we can subscribe to the publisher by passin in the subscriber fn as an argument,as soon as program loads init fn is called which immediately calls addHandlerRender() from the view,and that is legit coz controller does import from view.As we call addHandlerRender we pass in controlRecipe as arg
-.
-//Implementing Bookmarks
-//Adding a handler to recipe,so that user can bookmark the recipe,then that'll re-render our update the recipe with the book mark button .
-*/
