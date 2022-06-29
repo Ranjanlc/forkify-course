@@ -11,6 +11,7 @@ export const state = {
     resultsPerPage: RES_PER_PAGE,
   },
   bookmarks: [],
+  shoppingList: [],
 };
 const createRecipeObject = function (data) {
   const { recipe } = data.data;
@@ -34,7 +35,10 @@ export const loadRecipe = async function (id) {
     if (state.bookmarks.some(bookmark => bookmark.id === id))
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
-    console.log(state.recipe);
+    //SHOPPING LIST
+    if (state.shoppingList.some(item => item.id === id))
+      state.recipe.shopped = true;
+    else state.recipe.shopped = false;
   } catch (err) {
     throw err;
   }
@@ -62,7 +66,6 @@ export const getSearchResultsPage = function (page = 1) {
   state.search.page = page;
   const start = (page - 1) * state.search.resultsPerPage;
   const end = page * state.search.resultsPerPage;
-  console.log(state.search.results.slice(start, end));
   return state.search.results.slice(start, end);
 };
 
@@ -91,18 +94,6 @@ export const deleteBookmark = function (id) {
   if (id === state.recipe.id) state.recipe.bookmarked = false;
   persistBookmarks();
 };
-
-const init = function () {
-  const storage = localStorage.getItem('bookmarks');
-  if (!storage) return;
-  state.bookmarks = JSON.parse(storage);
-};
-init();
-
-const clearBookmarks = function () {
-  localStorage.clear('bookmarks');
-};
-// clearBookmarks();
 
 export const uploadRecipe = async function (newRecipe) {
   try {
@@ -134,3 +125,36 @@ export const uploadRecipe = async function (newRecipe) {
     throw err;
   }
 };
+
+export const persistShopping = function () {
+  localStorage.setItem('shoppingList', JSON.stringify(state.shoppingList));
+};
+
+export const addShopping = function (recipe) {
+  //Adding bookmarks
+  // console.log('model', recipe);
+  state.shoppingList.push(recipe);
+  // console.log(state.shoppingList);
+  //Mark current recipe as bookmark
+  if (recipe.id === state.recipe.id) state.recipe.shopped = true;
+  persistShopping();
+};
+export const deleteShopping = function (id) {
+  const index = state.shoppingList.findIndex(el => el.id === id);
+  state.shoppingList.splice(index, 1);
+  //Mark current recipe as not bookmark
+  if (id === state.recipe.id) state.recipe.shopped = false;
+  persistShopping();
+};
+
+const init = function () {
+  const storage = localStorage.getItem('bookmarks');
+  const shoppingStorage = localStorage.getItem('shoppingList');
+  if (!storage) return;
+  if (!shoppingStorage) return;
+
+  state.bookmarks = JSON.parse(storage);
+  state.shoppingList = JSON.parse(shoppingStorage);
+  // console.log(state.shoppingList, 'boom');
+};
+init();

@@ -35,6 +35,7 @@ export default class View {
       const curEl = curElements[i];
       // console.log(curEl, newEl.isEqualNode(curEl)); //It compares both content.It doesnt have to be exact same node.
       //Update changed text
+      if (!curEl) return;
       if (
         !newEl.isEqualNode(curEl) &&
         newEl.firstChild?.nodeValue.trim() !== ''
@@ -46,7 +47,6 @@ export default class View {
 
       //Update changed attribute
       if (!newEl.isEqualNode(curEl)) {
-        // console.log(Array.from(curEl.attributes));
         Array.from(newEl.attributes).forEach(
           attr => curEl.setAttribute(attr.name, attr.value) //WE get value from teh data-update-to.value and set it to curEl
         );

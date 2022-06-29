@@ -5,6 +5,7 @@ import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarksView from './views/bookmarksView.js';
 import addRecipeView from './views/addRecipeView.js';
+import shoppingView from './views/shoppingView.js';
 import { MODAL_CLOSE_SEC } from './config.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -28,7 +29,7 @@ const controlRecipes = async function () {
     resultsView.update(model.getSearchResultsPage()); //It would also work with render.It will work coz once hash changes recipe is rendered and also the entire search results view got rendered again and this time id of the result is the same as curId.But if we click another el,there is flickering as the images are loading again.
     //update method works because there is two updates in the element,preview link is chaning to active of one and one active is changing to preview link only.So,update method works here.
     bookmarksView.update(model.state.bookmarks);
-
+    shoppingView.update(model.state.shoppingList);
     //1)Loading recipe
     await model.loadRecipe(id);
 
@@ -96,7 +97,6 @@ const controlAddRecipe = async function (newRecipe) {
     addRecipeView.renderMessage();
     //Render bookmark view
     bookmarksView.render(model.state.bookmarks); //not update coz we really want to insert new element.
-
     //Change id in the url
     window.history.pushState(null, '', `#${model.state.recipe.id}`); //We can do much more things with history api like going back and forth just like if we were clicking the api
     //Close form window
@@ -107,11 +107,27 @@ const controlAddRecipe = async function (newRecipe) {
     addRecipeView.renderError(err.message);
   }
 };
+const controlAddShopping = function () {
+  if (!model.state.recipe.shopped) model.addShopping(model.state.recipe);
+  else model.deleteShopping(model.state.recipe.id);
+  // console.log(model.state.recipe);
+  //upDate recipeView
+  recipeView.update(model.state.recipe);
+  //Render BOOkmark
+  shoppingView.render(model.state.shoppingList);
+};
+
+const controlShopping = function () {
+  shoppingView.render(model.state.shoppingList);
+};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks); //We rendered bookmark at first.To avoid the error of having unequal elements while updating bookmark.
+  shoppingView.addHandlerRender(controlShopping);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
+  recipeView.addHandlerAddShopping(controlAddShopping);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);

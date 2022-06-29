@@ -29,6 +29,14 @@ class RecipeView extends View {
       handler();
     });
   }
+  addHandlerAddShopping(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      //We cant select btn--bookmark coz at the time of loading page,it is not present and we cant add event listener to null
+      const btn = e.target.closest('.btn--shopping');
+      if (!btn) return;
+      handler();
+    });
+  }
   _generateMarkup() {
     return `<figure class="recipe__fig">
     <img src="${this._data.image}" alt="${
@@ -91,7 +99,7 @@ class RecipeView extends View {
     
     <button class="btn--round btn--shopping ">
       <svg class="">
-        <use href="${icons}#shopping"></use>
+        <use href="${icons}#shopping${this._data.shopped ? '-fill' : ''}"></use>
       </svg>
     </button>
     
